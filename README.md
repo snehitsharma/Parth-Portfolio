@@ -1,6 +1,7 @@
-<<<<<<< HEAD
 # PERSONAL-PORTFOLIO
-This is my Personal Portfolio
+👋 Welcome to my profile!
+
+I'm Parth, a dynamic software engineer with a passion for innovation and problem-solving. Currently pursuing my Master's in Computer Science at the University of Massachusetts, Boston, I thrive on turning ideas into reality through technology. This is my Personal Portfolio
 =======
 # Personal Portfolio Website in React
 
