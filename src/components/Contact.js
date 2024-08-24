@@ -1,8 +1,9 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import contactImg from "../assets/img/contact-img.svg";
 import 'animate.css';
 import TrackVisibility from 'react-on-screen';
+import emailjs from 'emailjs-com';
 
 export const Contact = () => {
   const formInitialDetails = {
@@ -26,20 +27,28 @@ export const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setButtonText("Sending...");
-    let response = await fetch("http://localhost:5000/contact", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json;charset=utf-8",
-      },
-      body: JSON.stringify(formDetails),
-    });
-    setButtonText("Send");
-    let result = await response.json();
-    setFormDetails(formInitialDetails);
-    if (result.code == 200) {
-      setStatus({ succes: true, message: 'Message sent successfully'});
-    } else {
-      setStatus({ succes: false, message: 'Something went wrong, please try again later.'});
+    try {
+      const templateParams = {
+        from_name: `${formDetails.firstName} ${formDetails.lastName}`,
+        from_email: formDetails.email,
+        phone: formDetails.phone,
+        message: formDetails.message
+      };
+      
+      await emailjs.send(
+        'YOUR_SERVICE_ID',
+        'YOUR_TEMPLATE_ID',
+        templateParams,
+        'YOUR_USER_ID'
+      );
+      
+      setButtonText("Send");
+      setFormDetails(formInitialDetails);
+      setStatus({ success: true, message: 'Message sent successfully'});
+    } catch (error) {
+      console.error('Error sending email:', error);
+      setButtonText("Send");
+      setStatus({ success: false, message: 'Something went wrong, please try again later.'});
     }
   };
 
@@ -65,7 +74,7 @@ export const Contact = () => {
                       <input type="text" value={formDetails.firstName} placeholder="First Name" onChange={(e) => onFormUpdate('firstName', e.target.value)} />
                     </Col>
                     <Col size={12} sm={6} className="px-1">
-                      <input type="text" value={formDetails.lasttName} placeholder="Last Name" onChange={(e) => onFormUpdate('lastName', e.target.value)}/>
+                      <input type="text" value={formDetails.lastName} placeholder="Last Name" onChange={(e) => onFormUpdate('lastName', e.target.value)}/>
                     </Col>
                     <Col size={12} sm={6} className="px-1">
                       <input type="email" value={formDetails.email} placeholder="Email Address" onChange={(e) => onFormUpdate('email', e.target.value)} />
