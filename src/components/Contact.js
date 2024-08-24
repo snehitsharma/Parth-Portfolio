@@ -36,10 +36,10 @@ export const Contact = () => {
       };
       
       await emailjs.send(
-        'YOUR_SERVICE_ID',
-        'YOUR_TEMPLATE_ID',
+        'SERVICE_ID',
+        'TEMPLATE_ID',
         templateParams,
-        'YOUR_USER_ID'
+        'USER_ID'
       );
       
       setButtonText("Send");
